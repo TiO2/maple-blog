@@ -4,9 +4,9 @@
 # Copyright © 2017 jianglin
 # File Name: models.py
 # Author: jianglin
-# Email: lin.jiang@upai.com
+# Email: xiyang0807@gmail.com
 # Created: 2017-08-24 15:13:33 (CST)
-# Last Update:星期五 2017-8-25 17:16:27 (CST)
+# Last Update: 星期一 2018-02-05 13:34:41 (CST)
 #          By:
 # Description:
 # **************************************************************************
@@ -71,11 +71,9 @@ class User(db.Model, UserMixin):
         self.introduce = form.introduce.data
         db.session.commit()
 
-    def __repr__(self):
-        return "<User %r>" % self.username
-
-    def __str__(self):
-        return self.username
+    @property
+    def is_logined(self):
+        return self.is_authenticated
 
     @property
     def token(self):

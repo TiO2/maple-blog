@@ -4,14 +4,30 @@
 # Copyright © 2017 jianglin
 # File Name: utils.py
 # Author: jianglin
-# Email: lin.jiang@upai.com
+# Email: xiyang0807@gmail.com
 # Created: 2017-08-25 16:17:26 (CST)
-# Last Update:星期五 2017-8-25 16:19:25 (CST)
+# Last Update: 星期一 2018-02-05 13:34:41 (CST)
 #          By:
 # Description:
 # **************************************************************************
-from flask import request
+from functools import wraps
+from flask import request, abort
+from flask_login import login_required, current_user
 from maple.extensions import redis_data as redis
+
+
+def superuser_required(func):
+    @wraps(func)
+    def _superuser_required(*args, **kwargs):
+        @login_required
+        def _required():
+            if not current_user.is_superuser:
+                abort(403)
+            return func(*args, **kwargs)
+
+        return _required()
+
+    return _superuser_required
 
 
 class Record(object):
